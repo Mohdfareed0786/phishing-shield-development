@@ -22,9 +22,7 @@ export type ThreatSource = {
   detections?: string[]
 }
 
-export type UrlScanResult = {
-  scanType: 'url'
-  submittedUrl: string
+export type UrlFinding = {
   domain: string
   riskScore: number
   confidence: number
@@ -32,43 +30,40 @@ export type UrlScanResult = {
   reasons: DetectionReason[]
   checks: SecurityCheck[]
   threatSources: ThreatSource[]
-  analyzedAt: string
 }
 
-export type MessageScanResult = {
-  scanType: 'message'
+export type ScanResult = {
+  scanType: 'url' | 'message'
+  scanId?: string
+  historySaved?: boolean
+  historyMessage?: string
+  submittedUrl?: string
+  domain?: string
+  targetDisplay?: string
   riskScore: number
   confidence: number
+  confidenceMeaning?: string
   classification: string
-  phishingLikelihood: number
+  phishingLikelihood?: number
+  likelihoodMeaning?: string
+  recommendedAction?: string
   reasons: DetectionReason[]
   checks: SecurityCheck[]
-  extractedUrls: Array<{
-    domain: string
-    riskScore: number
-    confidence: number
-    classification: string
-    reasons: DetectionReason[]
-    checks: SecurityCheck[]
-    threatSources: ThreatSource[]
-  }>
   threatSources: ThreatSource[]
+  extractedUrls?: UrlFinding[]
   analyzedAt: string
 }
 
-export type ScanResult = UrlScanResult | MessageScanResult
-
-export type RiskFactor = DetectionReason
-
-export type DnsAnalysis = {
-  check: SecurityCheck
-  addresses: string[]
-  riskFactors: RiskFactor[]
-}
-
-export type ThreatAnalysis = {
-  sources: ThreatSource[]
-  urlCheck: SecurityCheck
-  reputationCheck: SecurityCheck
-  riskFactors: RiskFactor[]
+export type ScanRecord = {
+  id: string
+  scan_type: 'url' | 'message'
+  target_display: string
+  risk_score: number
+  confidence: number
+  classification: string
+  detection_reasons: DetectionReason[]
+  security_checks: SecurityCheck[]
+  threat_sources: ThreatSource[]
+  analysis: ScanResult
+  created_at: string
 }
